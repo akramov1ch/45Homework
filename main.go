@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
 type User struct {
@@ -25,14 +26,12 @@ func getUserByID(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
 		return
 	}
-
 	for _, user := range users {
 		if user.ID == id {
 			c.JSON(http.StatusOK, user)
 			return
 		}
 	}
-
 	c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
 }
 
@@ -42,7 +41,6 @@ func createUser(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
 		return
 	}
-
 	newUser.ID = nextID
 	nextID++
 	users = append(users, newUser)
@@ -51,10 +49,8 @@ func createUser(c *gin.Context) {
 
 func main() {
 	router := gin.Default()
-
 	router.GET("/users", getUsers)
 	router.GET("/users/:id", getUserByID)
 	router.POST("/users", createUser)
-
 	router.Run(":8080")
 }
